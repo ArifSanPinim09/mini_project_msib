@@ -4,14 +4,16 @@ class UserModel {
   String? name;
   String? address;
   String? phoneNumber;
+  String? photoUrl;
   String? password;
 
   UserModel({
-    this.name,
+    this.id,
     this.username,
+    this.name,
     this.address,
     this.phoneNumber,
-    this.id,
+    this.photoUrl,
     this.password,
   });
 
@@ -23,6 +25,7 @@ class UserModel {
       address: json['address'],
       phoneNumber: json['phoneNumber'],
       password: json['password'],
+      photoUrl: json['photoUrl'],
     );
   }
 
@@ -33,5 +36,6 @@ class UserModel {
         "address": address,
         "phoneNumber": phoneNumber,
         "password": password,
+        "photoUrl": photoUrl,
       };
 }
