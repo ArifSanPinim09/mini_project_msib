@@ -5,12 +5,10 @@ import 'package:mini_project/app/data/model/user_model.dart';
 class AuthRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  //REGISTER
   Future<void> register({
     required UserModel userModel,
   }) async {
     try {
-      // Check if username already exists
       var snapshot = await _firestore
           .collection('users')
           .where('username', isEqualTo: userModel.username)
@@ -20,11 +18,9 @@ class AuthRepository {
         throw Exception('Username already exists');
       }
 
-      // Hash password sebelum disimpan
       String hashedPassword = HashHelper.hashPassword(userModel.password!);
       userModel.password = hashedPassword;
 
-      // Generate unique ID
       String userId = _firestore.collection('users').doc().id;
       userModel.id = userId;
 
@@ -34,10 +30,8 @@ class AuthRepository {
     }
   }
 
-  // LOGIN BY USERNAME
   Future<UserModel> loginByUsername(String username, String password) async {
     try {
-      // Ambil user berdasarkan username
       var snapshot = await _firestore
           .collection('users')
           .where('username', isEqualTo: username)
@@ -47,7 +41,6 @@ class AuthRepository {
         throw Exception('Invalid username or password');
       }
 
-      // Verify password
       UserModel user = UserModel.fromJson(snapshot.docs.first.data());
       bool isPasswordValid =
           HashHelper.verifyPassword(password, user.password!);
@@ -62,7 +55,6 @@ class AuthRepository {
     }
   }
 
-  //GET DATA USER
   Future<UserModel?> getCurrentUser(String userId) async {
     try {
       DocumentSnapshot doc =
